@@ -33,4 +33,8 @@ export class MenuContainer extends Container {
   public set textValue(text: string) {
     this._textValue = text;
   }
+
+  public set textStyle(style: TextStyle) {
+    this._textStyle = style;
+  }
 }
