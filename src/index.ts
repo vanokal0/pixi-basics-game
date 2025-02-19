@@ -1,5 +1,6 @@
 import { Application } from "pixi.js";
 import { MenuContainer } from "./scenes/MenuContainer";
+import { LevelContainer } from "./scenes/LevelContainer";
 
 (async () => {
   //application initialization
@@ -18,6 +19,14 @@ import { MenuContainer } from "./scenes/MenuContainer";
   menuContainer.addEventListener("click", () => {
     console.log("Hello World!");
   });
-
   app.stage.addChild(menuContainer);
+
+  const levelScene: LevelContainer = new LevelContainer();
+  const updateLevel = await levelScene.initialize();
+
+  app.ticker.add((dt) => {
+    updateLevel(dt);
+  });
+
+  app.stage.addChild(levelScene);
 })();
