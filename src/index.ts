@@ -1,3 +1,4 @@
+import { initDevtools } from "@pixi/devtools";
 import { Application } from "pixi.js";
 import { MenuContainer } from "./scenes/MenuContainer";
 import { LevelContainer } from "./scenes/LevelContainer";
@@ -11,6 +12,7 @@ import { LevelContainer } from "./scenes/LevelContainer";
   });
   app.canvas.style.position = "absolute";
   document.body.appendChild(app.canvas);
+  initDevtools({ app });
 
   //menu scene
   const menuContainer: MenuContainer = new MenuContainer();

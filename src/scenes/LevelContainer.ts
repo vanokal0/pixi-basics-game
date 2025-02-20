@@ -5,124 +5,92 @@ import {
   Container,
   Ticker,
 } from "pixi.js";
+import {
+  AnimationType,
+  MovableCitizen,
+  CitizenAsset,
+} from "../movable/MovableCitizen";
 
 export class LevelContainer extends Container {
-  private _citizenScale = 0.2;
-  private _goldAmount: number = 0;
-  private _citizen: AnimatedSprite | undefined;
-  private _citizenAsset: CitizenAsset | undefined;
-
   public constructor() {
     super();
   }
 
   public async initialize(): Promise<(dt: Ticker) => void> {
-    this._citizenAsset = (await Assets.load(
+    const citizenAsset: CitizenAsset = (await Assets.load(
       "../../resources/citizen/citizen.json"
     )) as CitizenAsset;
 
-    if (!this._citizenAsset) {
-      throw new Error("Failed to create sprite: Asset is undefined");
-    }
-
-    this._citizen = new AnimatedSprite(
-      this._citizenAsset.animations.citizen_front_idle
+    //citizen initialization
+    const citizen: MovableCitizen = new MovableCitizen(
+      this.initCitizenSpriteMap(citizenAsset),
+      AnimationType.FRONT_IDLE
     );
-
-    this._citizen.x = 50;
-    this._citizen.y = 50;
-    this._citizen.scale = this._citizenScale;
-    this._citizen.animationSpeed = 0.6;
-    this._citizen.play();
-    this.addChild(this._citizen);
-
-    const keyMap: Map<string, boolean> = new Map<string, boolean>();
-    this.attachCitizenControlsListeners(keyMap);
+    citizen.play();
+    this.addChild(citizen);
 
     return (dt: Ticker) => {
-      if (this._citizen && this._citizenAsset) {
-        this.moveCitizen(this._citizen, this._citizenAsset, keyMap, dt);
-      }
+      citizen.move(dt);
     };
   }
 
-  private attachCitizenControlsListeners(keymap: Map<string, boolean>) {
-    document.addEventListener("keydown", (e) => {
-      keymap.set(e.code, true);
-    });
+  //mapping Enum values to Citizen sprites
+  private initCitizenSpriteMap(
+    citizenAsset: CitizenAsset
+  ): Map<AnimationType, AnimatedSprite> {
+    const animationMap: Map<AnimationType, AnimatedSprite> = new Map<
+      AnimationType,
+      AnimatedSprite
+    >();
 
-    document.addEventListener("keyup", (e) => {
-      keymap.set(e.code, false);
-    });
+    animationMap.set(
+      AnimationType.FRONT_IDLE,
+      this.createModifiedSprite(citizenAsset.animations.citizen_front_idle)
+    );
+
+    animationMap.set(
+      AnimationType.FRONT_WALK,
+      this.createModifiedSprite(citizenAsset.animations.citizen_front_walk)
+    );
+
+    animationMap.set(
+      AnimationType.BACK_IDLE,
+      this.createModifiedSprite(citizenAsset.animations.citizen_back_idle)
+    );
+    animationMap.set(
+      AnimationType.BACK_WALK,
+      this.createModifiedSprite(citizenAsset.animations.citizen_back_walk)
+    );
+
+    animationMap.set(
+      AnimationType.LEFT_IDLE,
+      this.createModifiedSprite(citizenAsset.animations.citizen_side_idle)
+    );
+    animationMap.set(
+      AnimationType.LEFT_WALK,
+      this.createModifiedSprite(citizenAsset.animations.citizen_side_walk)
+    );
+
+    const rightIdleSprite: AnimatedSprite = this.createModifiedSprite(
+      citizenAsset.animations.citizen_side_idle
+    );
+    rightIdleSprite.scale.x = -1;
+    animationMap.set(AnimationType.RIGHT_IDLE, rightIdleSprite);
+
+    const rightWalkSprite: AnimatedSprite = this.createModifiedSprite(
+      citizenAsset.animations.citizen_side_walk
+    );
+    rightWalkSprite.scale.x = -1;
+    animationMap.set(AnimationType.RIGHT_WALK, rightWalkSprite);
+
+    return animationMap;
   }
 
-  //REPLACE MULTIPLE IF WITH SWITCH/CASE
-  //PUT LOGIC IN REPLACE SPRITE METHOD WITH AN ARGUMENT EXTRACTED FROM MAPP<ARROW, ANIMATION>
-  private moveCitizen(
-    citizen: AnimatedSprite,
-    citizenAsset: CitizenAsset,
-    keyMap: Map<string, boolean>,
-    dt: Ticker
-  ) {
-    let hasMoved: boolean = false;
-    const speed: number = 10;
-    if (keyMap.get("ArrowLeft")) {
-      if (!citizen.texture.label?.includes("side_walk")) {
-        const newCitizen: AnimatedSprite = new AnimatedSprite(
-          citizenAsset.animations.citizen_side_walk
-        );
-        newCitizen.scale = this._citizenScale;
-        if (this._citizen) {
-          newCitizen.position.x = this._citizen.position.x;
-          newCitizen.position.y = this._citizen.position.y;
-        }
-        this.removeChild(citizen);
-        this.addChild(newCitizen);
-        this._citizen = newCitizen;
-        citizen = newCitizen;
-        newCitizen.play();
-      }
-
-      citizen.position.x -= dt.deltaTime * speed;
-
-      hasMoved = true;
-    }
-    if (keyMap.get("ArrowRight")) {
-      citizen.position.x += dt.deltaTime * speed;
-      hasMoved = true;
-    }
-    if (keyMap.get("ArrowDown")) {
-      citizen.position.y += dt.deltaTime * speed;
-      hasMoved = true;
-    }
-    if (keyMap.get("ArrowUp")) {
-      citizen.position.y -= dt.deltaTime * speed;
-      hasMoved = true;
-    }
-
-    if (!hasMoved) {
-      this.removeChild(citizen);
-      const newCitizen: AnimatedSprite = new AnimatedSprite(
-        citizenAsset.animations.citizen_front_idle
-      );
-      newCitizen.scale = this._citizenScale;
-      if (this._citizen) {
-        newCitizen.position.x = this._citizen.position.x;
-        newCitizen.position.y = this._citizen.position.y;
-      }
-
-      newCitizen.play();
-      this.addChild(newCitizen);
-      this._citizen = newCitizen;
-    }
+  private createModifiedSprite(
+    spriteFrames: AnimatedSpriteFrames
+  ): AnimatedSprite {
+    const sprite = new AnimatedSprite(spriteFrames);
+    sprite.anchor.set(0.5, 0.5);
+    return sprite;
   }
-}
-
-interface CitizenAsset {
-  animations: {
-    citizen_front_idle: AnimatedSpriteFrames;
-    citizen_front_walk: AnimatedSpriteFrames;
-    citizen_side_walk: AnimatedSpriteFrames;
-    citizen_side_idle: AnimatedSpriteFrames;
-  };
 }
