@@ -1,0 +1,357 @@
+{
+  "frames": {
+    "Attacking/Minotaur_01_Attacking_000.png": {
+      "frame": { "x": 795, "y": 2062, "w": 437, "h": 391 },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 215, "y": 60, "w": 437, "h": 391 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Attacking/Minotaur_01_Attacking_001.png": {
+      "frame": { "x": 883, "y": 413, "w": 420, "h": 398 },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 205, "y": 53, "w": 420, "h": 398 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Attacking/Minotaur_01_Attacking_002.png": {
+      "frame": { "x": 1, "y": 3360, "w": 371, "h": 421 },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 192, "y": 30, "w": 371, "h": 421 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Attacking/Minotaur_01_Attacking_003.png": {
+      "frame": { "x": 401, "y": 2475, "w": 364, "h": 443 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 169, "y": 8, "w": 364, "h": 443 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Attacking/Minotaur_01_Attacking_004.png": {
+      "frame": { "x": 1283, "y": 407, "w": 360, "h": 438 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 165, "y": 13, "w": 360, "h": 438 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Attacking/Minotaur_01_Attacking_005.png": {
+      "frame": { "x": 1260, "y": 1288, "w": 355, "h": 431 },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 162, "y": 20, "w": 355, "h": 431 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Attacking/Minotaur_01_Attacking_006.png": {
+      "frame": { "x": 1676, "y": 803, "w": 349, "h": 428 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 160, "y": 23, "w": 349, "h": 428 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Attacking/Minotaur_01_Attacking_007.png": {
+      "frame": { "x": 880, "y": 835, "w": 399, "h": 421 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 177, "y": 30, "w": 399, "h": 421 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Attacking/Minotaur_01_Attacking_008.png": {
+      "frame": { "x": 1, "y": 1, "w": 542, "h": 411 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 177, "y": 40, "w": 542, "h": 411 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Attacking/Minotaur_01_Attacking_009.png": {
+      "frame": { "x": 1, "y": 414, "w": 515, "h": 412 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 183, "y": 39, "w": 515, "h": 412 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Attacking/Minotaur_01_Attacking_010.png": {
+      "frame": { "x": 545, "y": 1, "w": 495, "h": 410 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 191, "y": 41, "w": 495, "h": 410 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Attacking/Minotaur_01_Attacking_011.png": {
+      "frame": { "x": 1042, "y": 1, "w": 469, "h": 404 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 202, "y": 47, "w": 469, "h": 404 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Idle Blink/Minotaur_01_Idle Blinking_000.png": {
+      "frame": { "x": 795, "y": 2062, "w": 437, "h": 391 },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 215, "y": 60, "w": 437, "h": 391 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Idle Blink/Minotaur_01_Idle Blinking_001.png": {
+      "frame": { "x": 400, "y": 2920, "w": 438, "h": 393 },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 213, "y": 58, "w": 438, "h": 393 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Idle Blink/Minotaur_01_Idle Blinking_002.png": {
+      "frame": { "x": 1281, "y": 847, "w": 439, "h": 393 },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 211, "y": 58, "w": 439, "h": 393 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Idle Blink/Minotaur_01_Idle Blinking_003.png": {
+      "frame": { "x": 1587, "y": 2046, "w": 439, "h": 392 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 210, "y": 59, "w": 439, "h": 392 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Idle Blink/Minotaur_01_Idle Blinking_004.png": {
+      "frame": { "x": 1195, "y": 2478, "w": 440, "h": 391 },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 208, "y": 60, "w": 440, "h": 391 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Idle Blink/Minotaur_01_Idle Blinking_005.png": {
+      "frame": { "x": 817, "y": 1258, "w": 441, "h": 394 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 206, "y": 57, "w": 441, "h": 394 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Idle Blink/Minotaur_01_Idle Blinking_006.png": {
+      "frame": { "x": 1, "y": 2475, "w": 441, "h": 398 },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 205, "y": 53, "w": 441, "h": 398 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Idle Blink/Minotaur_01_Idle Blinking_007.png": {
+      "frame": { "x": 1513, "y": 1, "w": 441, "h": 399 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 206, "y": 52, "w": 441, "h": 399 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Idle Blink/Minotaur_01_Idle Blinking_008.png": {
+      "frame": { "x": 1, "y": 2918, "w": 440, "h": 397 },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 208, "y": 54, "w": 440, "h": 397 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Idle Blink/Minotaur_01_Idle Blinking_009.png": {
+      "frame": { "x": 1254, "y": 3328, "w": 439, "h": 394 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 210, "y": 57, "w": 439, "h": 394 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Idle Blink/Minotaur_01_Idle Blinking_010.png": {
+      "frame": { "x": 1588, "y": 2440, "w": 439, "h": 390 },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 211, "y": 61, "w": 439, "h": 390 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Idle Blink/Minotaur_01_Idle Blinking_011.png": {
+      "frame": { "x": 1596, "y": 2881, "w": 438, "h": 391 },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 213, "y": 60, "w": 438, "h": 391 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Walking/Minotaur_01_Walking_000.png": {
+      "frame": { "x": 1, "y": 828, "w": 473, "h": 410 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 187, "y": 51, "w": 473, "h": 410 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Walking/Minotaur_01_Walking_001.png": {
+      "frame": { "x": 1, "y": 1240, "w": 456, "h": 413 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 202, "y": 47, "w": 456, "h": 413 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Walking/Minotaur_01_Walking_002.png": {
+      "frame": { "x": 1, "y": 2062, "w": 440, "h": 411 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 214, "y": 47, "w": 440, "h": 411 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Walking/Minotaur_01_Walking_003.png": {
+      "frame": { "x": 455, "y": 1655, "w": 428, "h": 405 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 221, "y": 51, "w": 428, "h": 405 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Walking/Minotaur_01_Walking_004.png": {
+      "frame": { "x": 1188, "y": 2062, "w": 414, "h": 397 },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 228, "y": 56, "w": 414, "h": 397 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Walking/Minotaur_01_Walking_005.png": {
+      "frame": { "x": 1273, "y": 1645, "w": 415, "h": 399 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 221, "y": 55, "w": 415, "h": 399 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Walking/Minotaur_01_Walking_006.png": {
+      "frame": { "x": 476, "y": 828, "w": 408, "h": 402 },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 221, "y": 54, "w": 408, "h": 402 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Walking/Minotaur_01_Walking_007.png": {
+      "frame": { "x": 1645, "y": 402, "w": 387, "h": 399 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 233, "y": 59, "w": 387, "h": 399 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Walking/Minotaur_01_Walking_008.png": {
+      "frame": { "x": 424, "y": 3360, "w": 364, "h": 406 },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 246, "y": 54, "w": 364, "h": 406 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Walking/Minotaur_01_Walking_009.png": {
+      "frame": { "x": 443, "y": 2062, "w": 350, "h": 411 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 248, "y": 50, "w": 350, "h": 411 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Walking/Minotaur_01_Walking_010.png": {
+      "frame": { "x": 459, "y": 1240, "w": 356, "h": 413 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 252, "y": 47, "w": 356, "h": 413 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Walking/Minotaur_01_Walking_011.png": {
+      "frame": { "x": 518, "y": 414, "w": 363, "h": 412 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 255, "y": 47, "w": 363, "h": 412 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Walking/Minotaur_01_Walking_012.png": {
+      "frame": { "x": 885, "y": 1654, "w": 386, "h": 406 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 242, "y": 51, "w": 386, "h": 406 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Walking/Minotaur_01_Walking_013.png": {
+      "frame": { "x": 1195, "y": 2920, "w": 406, "h": 399 },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 229, "y": 55, "w": 406, "h": 399 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Walking/Minotaur_01_Walking_014.png": {
+      "frame": { "x": 832, "y": 3345, "w": 420, "h": 397 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 221, "y": 55, "w": 420, "h": 397 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Walking/Minotaur_01_Walking_015.png": {
+      "frame": { "x": 767, "y": 2501, "w": 426, "h": 402 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 221, "y": 54, "w": 426, "h": 402 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Walking/Minotaur_01_Walking_016.png": {
+      "frame": { "x": 795, "y": 2905, "w": 438, "h": 398 },
+      "rotated": true,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 215, "y": 60, "w": 438, "h": 398 },
+      "sourceSize": { "w": 720, "h": 490 }
+    },
+    "Walking/Minotaur_01_Walking_017.png": {
+      "frame": { "x": 1, "y": 1655, "w": 452, "h": 405 },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": { "x": 205, "y": 55, "w": 452, "h": 405 },
+      "sourceSize": { "w": 720, "h": 490 }
+    }
+  },
+  "animations": {
+    "attack": [
+      "Attacking/Minotaur_01_Attacking_000.png",
+      "Attacking/Minotaur_01_Attacking_001.png",
+      "Attacking/Minotaur_01_Attacking_002.png",
+      "Attacking/Minotaur_01_Attacking_003.png",
+      "Attacking/Minotaur_01_Attacking_004.png",
+      "Attacking/Minotaur_01_Attacking_005.png",
+      "Attacking/Minotaur_01_Attacking_006.png",
+      "Attacking/Minotaur_01_Attacking_007.png",
+      "Attacking/Minotaur_01_Attacking_008.png",
+      "Attacking/Minotaur_01_Attacking_009.png",
+      "Attacking/Minotaur_01_Attacking_010.png",
+      "Attacking/Minotaur_01_Attacking_011.png"
+    ],
+    "idle": [
+      "Idle Blink/Minotaur_01_Idle Blinking_000.png",
+      "Idle Blink/Minotaur_01_Idle Blinking_001.png",
+      "Idle Blink/Minotaur_01_Idle Blinking_002.png",
+      "Idle Blink/Minotaur_01_Idle Blinking_003.png",
+      "Idle Blink/Minotaur_01_Idle Blinking_004.png",
+      "Idle Blink/Minotaur_01_Idle Blinking_005.png",
+      "Idle Blink/Minotaur_01_Idle Blinking_006.png",
+      "Idle Blink/Minotaur_01_Idle Blinking_007.png",
+      "Idle Blink/Minotaur_01_Idle Blinking_008.png",
+      "Idle Blink/Minotaur_01_Idle Blinking_009.png",
+      "Idle Blink/Minotaur_01_Idle Blinking_010.png",
+      "Idle Blink/Minotaur_01_Idle Blinking_011.png"
+    ],
+    "walk": [
+      "Walking/Minotaur_01_Walking_000.png",
+      "Walking/Minotaur_01_Walking_001.png",
+      "Walking/Minotaur_01_Walking_002.png",
+      "Walking/Minotaur_01_Walking_003.png",
+      "Walking/Minotaur_01_Walking_004.png",
+      "Walking/Minotaur_01_Walking_005.png",
+      "Walking/Minotaur_01_Walking_006.png",
+      "Walking/Minotaur_01_Walking_007.png",
+      "Walking/Minotaur_01_Walking_008.png",
+      "Walking/Minotaur_01_Walking_009.png",
+      "Walking/Minotaur_01_Walking_010.png",
+      "Walking/Minotaur_01_Walking_011.png",
+      "Walking/Minotaur_01_Walking_012.png",
+      "Walking/Minotaur_01_Walking_013.png",
+      "Walking/Minotaur_01_Walking_014.png",
+      "Walking/Minotaur_01_Walking_015.png",
+      "Walking/Minotaur_01_Walking_016.png",
+      "Walking/Minotaur_01_Walking_017.png"
+    ]
+  },
+  "meta": {
+    "app": "https://www.codeandweb.com/texturepacker",
+    "version": "1.1",
+    "image": "minotaur.png",
+    "format": "RGBA8888",
+    "size": { "w": 2033, "h": 3743 },
+    "scale": "1",
+    "smartupdate": "$TexturePacker:SmartUpdate:62c46013087fe69422c0c35e17900e7c:c47f2decb73f69f521f1576df56fd040:8990a5d387bbc6f4125ab92257e6df09$"
+  }
+}

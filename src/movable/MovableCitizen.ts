@@ -1,30 +1,22 @@
-import {
-  AnimatedSprite,
-  Container,
-  AnimatedSpriteFrames,
-  Point,
-  Ticker,
-} from "pixi.js";
+import { AnimatedSprite, Container, Point, Ticker } from "pixi.js";
 import { MovableCharacter } from "./MovableCharacter";
 
 export class MovableCitizen extends Container implements MovableCharacter {
   static readonly INITIAL_SCALE: number = 0.15;
-  static readonly INITIAL_POSITION: Point = new Point(50, 50);
+  static readonly INITIAL_POSITION: Point = new Point(100, 100);
   static readonly INITIAL_SPEED: number = 30;
-  static readonly INITIAL_ANIMATION_SPEED: number = 0.6;
+  static readonly INITIAL_ANIMATION_SPEED: number = 0.3;
 
   static readonly ASSETS_PATH: string = "../../resources/citizen/citizen.json";
 
-  static _citizenAsset: CitizenAsset | undefined;
-
   private _speed: number;
   private _activeSprite: AnimatedSprite;
-  private _animatedSpriteMap: Map<AnimationType, AnimatedSprite>;
+  private _animatedSpriteMap: Map<CitizenAnimationType, AnimatedSprite>;
   private _userInputMap: Map<string, boolean>;
 
   public constructor(
-    animatedSpriteMap: Map<AnimationType, AnimatedSprite>,
-    initialAnimation: AnimationType
+    animatedSpriteMap: Map<CitizenAnimationType, AnimatedSprite>,
+    initialAnimation: CitizenAnimationType
   ) {
     super();
     this.x = MovableCitizen.INITIAL_POSITION.x;
@@ -39,9 +31,10 @@ export class MovableCitizen extends Container implements MovableCharacter {
     const initialAnimatedSprite: AnimatedSprite | undefined =
       animatedSpriteMap.get(initialAnimation);
     if (!initialAnimatedSprite) {
-      throw new Error("Initial animation is missing in animatedSpriteMap.");
+      throw new Error("Initial animation is missing in a sprite map.");
     }
     this._activeSprite = animatedSpriteMap.get(initialAnimation)!;
+    this._activeSprite.animationSpeed = MovableCitizen.INITIAL_ANIMATION_SPEED;
     this.addChild(this._activeSprite);
   }
 
@@ -53,38 +46,37 @@ export class MovableCitizen extends Container implements MovableCharacter {
     let hasMoved: boolean = false;
 
     if (this._userInputMap.get("ArrowLeft")) {
-      // if (!this._activeSprite.texture.label?.includes("side_walk"))
-      this.replaceAnimation(AnimationType.LEFT_WALK);
+      this.replaceAnimation(CitizenAnimationType.LEFT_WALK);
       this._activeSprite.position.x -= dt.deltaTime * this._speed;
       hasMoved = true;
     }
     if (this._userInputMap.get("ArrowRight")) {
-      this.replaceAnimation(AnimationType.RIGHT_WALK);
+      this.replaceAnimation(CitizenAnimationType.RIGHT_WALK);
       this._activeSprite.position.x += dt.deltaTime * this._speed;
       hasMoved = true;
     }
     if (this._userInputMap.get("ArrowDown")) {
-      this.replaceAnimation(AnimationType.FRONT_WALK);
+      this.replaceAnimation(CitizenAnimationType.FRONT_WALK);
       this._activeSprite.position.y += dt.deltaTime * this._speed;
       hasMoved = true;
     }
     if (this._userInputMap.get("ArrowUp")) {
-      this.replaceAnimation(AnimationType.BACK_WALK);
+      this.replaceAnimation(CitizenAnimationType.BACK_WALK);
       this._activeSprite.position.y -= dt.deltaTime * this._speed;
       hasMoved = true;
     }
 
     if (!hasMoved) {
-      this.replaceAnimation(AnimationType.FRONT_IDLE);
+      this.replaceAnimation(CitizenAnimationType.FRONT_IDLE);
     }
   }
 
-  private replaceAnimation(animationType: AnimationType) {
+  private replaceAnimation(animationType: CitizenAnimationType) {
     const newSprite: AnimatedSprite | undefined =
       this._animatedSpriteMap.get(animationType);
 
     if (!newSprite) {
-      throw new Error("Animation is missing in animatedSpriteMap.");
+      throw new Error("Animation is missing in a sprite map.");
     }
 
     this.removeChild(this._activeSprite);
@@ -107,18 +99,7 @@ export class MovableCitizen extends Container implements MovableCharacter {
   }
 }
 
-export interface CitizenAsset {
-  animations: {
-    citizen_front_idle: AnimatedSpriteFrames;
-    citizen_front_walk: AnimatedSpriteFrames;
-    citizen_back_idle: AnimatedSpriteFrames;
-    citizen_back_walk: AnimatedSpriteFrames;
-    citizen_side_idle: AnimatedSpriteFrames;
-    citizen_side_walk: AnimatedSpriteFrames;
-  };
-}
-
-export enum AnimationType {
+export enum CitizenAnimationType {
   FRONT_IDLE,
   FRONT_WALK,
 

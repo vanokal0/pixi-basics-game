@@ -11,6 +11,9 @@ import { LevelContainer } from "./scenes/LevelContainer";
     backgroundColor: "#c3c3c3",
   });
   app.canvas.style.position = "absolute";
+  app.canvas.style.top = "0";
+  app.canvas.style.left = "0";
+
   document.body.appendChild(app.canvas);
   initDevtools({ app });
 
