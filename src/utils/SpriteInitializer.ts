@@ -25,43 +25,41 @@ export class SpriteInitializer {
 
     animationMap.set(
       CitizenAnimationType.FRONT_IDLE,
-      this.createModifiedSprite(citizenAsset.animations.citizen_front_idle)
+      this.createModifiedSprite(citizenAsset.animations.citizen_front_idle, 1)
     );
 
     animationMap.set(
       CitizenAnimationType.FRONT_WALK,
-      this.createModifiedSprite(citizenAsset.animations.citizen_front_walk)
+      this.createModifiedSprite(citizenAsset.animations.citizen_front_walk, 1)
     );
 
     animationMap.set(
       CitizenAnimationType.BACK_IDLE,
-      this.createModifiedSprite(citizenAsset.animations.citizen_back_idle)
+      this.createModifiedSprite(citizenAsset.animations.citizen_back_idle, 1)
     );
     animationMap.set(
       CitizenAnimationType.BACK_WALK,
-      this.createModifiedSprite(citizenAsset.animations.citizen_back_walk)
+      this.createModifiedSprite(citizenAsset.animations.citizen_back_walk, 1)
     );
 
     animationMap.set(
       CitizenAnimationType.LEFT_IDLE,
-      this.createModifiedSprite(citizenAsset.animations.citizen_side_idle)
+      this.createModifiedSprite(citizenAsset.animations.citizen_side_idle, 1)
     );
     animationMap.set(
       CitizenAnimationType.LEFT_WALK,
-      this.createModifiedSprite(citizenAsset.animations.citizen_side_walk)
+      this.createModifiedSprite(citizenAsset.animations.citizen_side_walk, 1)
     );
 
-    const rightIdleSprite: AnimatedSprite = this.createModifiedSprite(
-      citizenAsset.animations.citizen_side_idle
+    animationMap.set(
+      CitizenAnimationType.RIGHT_IDLE,
+      this.createModifiedSprite(citizenAsset.animations.citizen_side_idle, -1)
     );
-    rightIdleSprite.scale.x = -1;
-    animationMap.set(CitizenAnimationType.RIGHT_IDLE, rightIdleSprite);
 
-    const rightWalkSprite: AnimatedSprite = this.createModifiedSprite(
-      citizenAsset.animations.citizen_side_walk
+    animationMap.set(
+      CitizenAnimationType.RIGHT_WALK,
+      this.createModifiedSprite(citizenAsset.animations.citizen_side_walk, -1)
     );
-    rightWalkSprite.scale.x = -1;
-    animationMap.set(CitizenAnimationType.RIGHT_WALK, rightWalkSprite);
 
     return animationMap;
   }
@@ -70,10 +68,9 @@ export class SpriteInitializer {
     const coinAsset: CoinAsset = await Assets.load(
       SpriteInitializer.COIN_ASSET_PATH
     );
-    return this.createModifiedSprite(coinAsset.animations.rotation);
+    return this.createModifiedSprite(coinAsset.animations.rotation, 1);
   }
 
-  //extend for other animations
   public async initMinotaurSpriteMap(): Promise<
     Map<MinotaurAnimationType, AnimatedSprite>
   > {
@@ -88,17 +85,39 @@ export class SpriteInitializer {
 
     animationMap.set(
       MinotaurAnimationType.IDLE,
-      this.createModifiedSprite(minotaurAsset.animations.idle)
+      this.createModifiedSprite(minotaurAsset.animations.idle, -1)
+    );
+
+    animationMap.set(
+      MinotaurAnimationType.WALK_LEFT,
+      this.createModifiedSprite(minotaurAsset.animations.walk, -1)
+    );
+
+    animationMap.set(
+      MinotaurAnimationType.WALK_RIGHT,
+      this.createModifiedSprite(minotaurAsset.animations.walk, 1)
+    );
+
+    animationMap.set(
+      MinotaurAnimationType.ATTACK_LEFT,
+      this.createModifiedSprite(minotaurAsset.animations.attack, -1)
+    );
+
+    animationMap.set(
+      MinotaurAnimationType.ATTACK_RIGHT,
+      this.createModifiedSprite(minotaurAsset.animations.attack, 1)
     );
 
     return animationMap;
   }
 
   private createModifiedSprite(
-    spriteFrames: AnimatedSpriteFrames
+    spriteFrames: AnimatedSpriteFrames,
+    scale: number
   ): AnimatedSprite {
     const sprite = new AnimatedSprite(spriteFrames);
-    sprite.anchor.set(0.5, 0.5);
+    sprite.anchor.set(0.5, 1);
+    sprite.scale.x = scale;
     return sprite;
   }
 }

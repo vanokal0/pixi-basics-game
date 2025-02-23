@@ -1,5 +1,8 @@
-import { Ticker } from "pixi.js";
+import { Point, Ticker } from "pixi.js";
 
 export interface MovableCharacter {
-  move(dt: Ticker): void;
+  get position(): Point;
+  getNextPosition(dt: Ticker): Point;
+  moveTo(point: Point): void;
+  play(): void;
 }

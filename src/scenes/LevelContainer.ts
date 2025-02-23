@@ -2,6 +2,8 @@ import {
   AnimatedSprite,
   Assets,
   Container,
+  Point,
+  Size,
   Ticker,
   TilingSprite,
 } from "pixi.js";
@@ -11,21 +13,37 @@ import {
 } from "../movable/MovableCitizen";
 import { SpriteInitializer } from "../utils/SpriteInitializer";
 import { MovableCharacter } from "../movable/MovableCharacter";
+import { RectangleBarrier } from "../static/RectangleBarrier";
+import {
+  MinotaurAnimationType,
+  MovableMinotaur,
+} from "../movable/MovableMinotaur";
 
 export class LevelContainer extends Container {
   static readonly DEFAULT_COIN_AMOUNT = 10;
-  static readonly DEFAULT_LEVEL_WIDTH = window.innerWidth;
-  static readonly DEFAULT_LEVEL_HEIGHT = window.innerHeight;
 
+  static readonly DEFAULT_LEVEL_SIZE = {
+    width: window.innerWidth,
+    height: window.innerHeight,
+  };
+  static readonly DEFAULT_BARRIER_SIZE: Size = { width: 80, height: 80 };
+
+  private _levelScore: number;
   private _coinAmount: number;
+  private _barrierSize: Size;
+
   private _movableCharacters: Array<MovableCharacter>;
 
   public constructor() {
     super();
     this._coinAmount = LevelContainer.DEFAULT_COIN_AMOUNT;
     this._movableCharacters = new Array<MovableCharacter>();
-    this.width = LevelContainer.DEFAULT_LEVEL_WIDTH;
-    this.height = LevelContainer.DEFAULT_LEVEL_HEIGHT;
+
+    this.width = LevelContainer.DEFAULT_LEVEL_SIZE.width;
+    this.height = LevelContainer.DEFAULT_LEVEL_SIZE.height;
+    this._barrierSize = LevelContainer.DEFAULT_BARRIER_SIZE;
+
+    this._levelScore = 0;
   }
 
   public async initialize(): Promise<(dt: Ticker) => void> {
@@ -35,8 +53,8 @@ export class LevelContainer extends Container {
     const groundAsset = await Assets.load("../../resources/ground/ground.png");
     const groundSprite = new TilingSprite({
       texture: groundAsset,
-      width: LevelContainer.DEFAULT_LEVEL_WIDTH,
-      height: LevelContainer.DEFAULT_LEVEL_HEIGHT,
+      width: LevelContainer.DEFAULT_LEVEL_SIZE.width,
+      height: LevelContainer.DEFAULT_LEVEL_SIZE.height,
     });
     groundSprite.position.set(0, 0);
     groundSprite.zIndex = -2;
@@ -46,43 +64,18 @@ export class LevelContainer extends Container {
     const barrierTexture = await Assets.load(
       "../../resources/barrier/barrier.png"
     );
-
-    const barrier_size: number = 80;
-
-    const topBarrier = new TilingSprite({
-      texture: barrierTexture,
-      width: LevelContainer.DEFAULT_LEVEL_WIDTH,
-      height: barrier_size,
-    });
-    topBarrier.position.set(0, 0);
-
-    const bottomBarrier = new TilingSprite({
-      texture: barrierTexture,
-      width: LevelContainer.DEFAULT_LEVEL_WIDTH,
-      height: barrier_size,
-    });
-    bottomBarrier.position.set(
-      0,
-      LevelContainer.DEFAULT_LEVEL_HEIGHT - bottomBarrier.height
+    const barrier = new RectangleBarrier(
+      barrierTexture,
+      {
+        width: this._barrierSize.width,
+        height: this._barrierSize.height,
+      },
+      {
+        width: this.width,
+        height: this.height,
+      }
     );
-
-    const leftBarrier = new TilingSprite({
-      texture: barrierTexture,
-      width: barrier_size,
-      height: LevelContainer.DEFAULT_LEVEL_HEIGHT,
-    });
-    leftBarrier.position.set(0, 0);
-
-    const rightBarrier = new TilingSprite({
-      texture: barrierTexture,
-      width: barrier_size,
-      height: LevelContainer.DEFAULT_LEVEL_HEIGHT,
-    });
-    rightBarrier.position.set(
-      LevelContainer.DEFAULT_LEVEL_WIDTH - rightBarrier.width,
-      0
-    );
-    this.addChild(topBarrier, bottomBarrier, leftBarrier, rightBarrier);
+    this.addChild(barrier);
 
     //citizen initialization
     const citizen: MovableCitizen = new MovableCitizen(
@@ -93,17 +86,35 @@ export class LevelContainer extends Container {
     this._movableCharacters.push(citizen);
     this.addChild(citizen);
 
+    //minotaur initialization
+    const minotaurSpriteMap: Map<MinotaurAnimationType, AnimatedSprite> =
+      await initializer.initMinotaurSpriteMap();
+    const minotaur = new MovableMinotaur(
+      minotaurSpriteMap,
+      MinotaurAnimationType.IDLE,
+      new Point(this.width / 2, this.height / 2)
+    );
+    minotaur.activeTarget = citizen;
+    minotaur.play();
+    this._movableCharacters.push(minotaur);
+    this.addChild(minotaur);
+
     //coins initialization
     const coinContainer: Container = new Container();
     for (let i = 0; i < this._coinAmount; i++) {
       const coin: AnimatedSprite = await initializer.initCoinSprite();
-      //replace with level height and width as a first argument, barrier as a second
       coin.x =
-        Math.random() * (LevelContainer.DEFAULT_LEVEL_WIDTH - barrier_size) +
-        barrier_size;
+        Math.random() *
+          (LevelContainer.DEFAULT_LEVEL_SIZE.width -
+            this._barrierSize.width -
+            this._barrierSize.width) +
+        this._barrierSize.width;
       coin.y =
-        Math.random() * (LevelContainer.DEFAULT_LEVEL_HEIGHT - barrier_size) +
-        barrier_size;
+        Math.random() *
+          (LevelContainer.DEFAULT_LEVEL_SIZE.height -
+            this._barrierSize.height -
+            this._barrierSize.height) +
+        this._barrierSize.height;
       coin.animationSpeed = 0.2;
       coin.scale = 0.08;
       coin.zIndex = -1;
@@ -113,12 +124,33 @@ export class LevelContainer extends Container {
     this.addChild(coinContainer);
 
     return (dt: Ticker) => {
-      this._movableCharacters.forEach((movable) => movable.move(dt));
-      this.checkCollision(citizen, coinContainer);
+      this._movableCharacters.forEach((movable) => {
+        const position = movable.getNextPosition(dt);
+        const moveCondition =
+          this.isValidPosition(position.x, position.y) &&
+          !movable.position.equals(position);
+        if (moveCondition) {
+          movable.moveTo(position);
+        }
+
+        const attackCondition =
+          movable instanceof MovableMinotaur &&
+          movable.isInRange &&
+          !movable.isAttacking;
+        if (attackCondition) {
+          movable.attack();
+          movable.activeTarget = undefined;
+          console.log("Game Over! (lose)");
+        }
+      });
+      this.checkCoinCollision(citizen, coinContainer);
+      if (this._levelScore === this._coinAmount) {
+        console.log("Game Over! (win)");
+      }
     };
   }
 
-  private checkCollision(
+  private checkCoinCollision(
     citizen: MovableCitizen,
     coinContainer: Container
   ): void {
@@ -127,7 +159,17 @@ export class LevelContainer extends Container {
         coin.getBounds().rectangle.intersects(citizen.getBounds().rectangle)
       ) {
         coinContainer.removeChild(coin);
+        this._levelScore++;
       }
     }
+  }
+
+  private isValidPosition(x: number, y: number): boolean {
+    return (
+      x >= this._barrierSize.width &&
+      x <= this.width - this._barrierSize.height &&
+      y >= this._barrierSize.height &&
+      y <= this.height - this._barrierSize.height
+    );
   }
 }

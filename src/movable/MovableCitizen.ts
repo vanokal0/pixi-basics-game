@@ -3,11 +3,10 @@ import { MovableCharacter } from "./MovableCharacter";
 
 export class MovableCitizen extends Container implements MovableCharacter {
   static readonly INITIAL_SCALE: number = 0.15;
-  static readonly INITIAL_POSITION: Point = new Point(100, 100);
-  static readonly INITIAL_SPEED: number = 30;
-  static readonly INITIAL_ANIMATION_SPEED: number = 0.3;
-
-  static readonly ASSETS_PATH: string = "../../resources/citizen/citizen.json";
+  static readonly INITIAL_POSITION: Point = new Point(200, 200);
+  static readonly INITIAL_SPEED: number = 3;
+  static readonly INITIAL_ANIMATION_SPEED: number = 0.5;
+  static readonly INITIAL_Z_INDEX: number = 2;
 
   private _speed: number;
   private _activeSprite: AnimatedSprite;
@@ -19,8 +18,12 @@ export class MovableCitizen extends Container implements MovableCharacter {
     initialAnimation: CitizenAnimationType
   ) {
     super();
-    this.x = MovableCitizen.INITIAL_POSITION.x;
-    this.y = MovableCitizen.INITIAL_POSITION.y;
+
+    this.position.set(
+      MovableCitizen.INITIAL_POSITION.x,
+      MovableCitizen.INITIAL_POSITION.y
+    );
+
     this._speed = MovableCitizen.INITIAL_SPEED;
     this.scale = MovableCitizen.INITIAL_SCALE;
     this._animatedSpriteMap = animatedSpriteMap;
@@ -35,6 +38,7 @@ export class MovableCitizen extends Container implements MovableCharacter {
     }
     this._activeSprite = animatedSpriteMap.get(initialAnimation)!;
     this._activeSprite.animationSpeed = MovableCitizen.INITIAL_ANIMATION_SPEED;
+    this.zIndex = MovableCitizen.INITIAL_Z_INDEX;
     this.addChild(this._activeSprite);
   }
 
@@ -42,33 +46,39 @@ export class MovableCitizen extends Container implements MovableCharacter {
     this._activeSprite.play();
   }
 
-  public move(dt: Ticker): void {
+  public getNextPosition(dt: Ticker): Point {
     let hasMoved: boolean = false;
+    const initialPosition = new Point(this.position.x, this.position.y);
 
     if (this._userInputMap.get("ArrowLeft")) {
       this.replaceAnimation(CitizenAnimationType.LEFT_WALK);
-      this._activeSprite.position.x -= dt.deltaTime * this._speed;
+      initialPosition.x -= dt.deltaTime * this._speed;
       hasMoved = true;
     }
     if (this._userInputMap.get("ArrowRight")) {
       this.replaceAnimation(CitizenAnimationType.RIGHT_WALK);
-      this._activeSprite.position.x += dt.deltaTime * this._speed;
+      initialPosition.x += dt.deltaTime * this._speed;
       hasMoved = true;
     }
     if (this._userInputMap.get("ArrowDown")) {
       this.replaceAnimation(CitizenAnimationType.FRONT_WALK);
-      this._activeSprite.position.y += dt.deltaTime * this._speed;
+      initialPosition.y += dt.deltaTime * this._speed;
       hasMoved = true;
     }
     if (this._userInputMap.get("ArrowUp")) {
       this.replaceAnimation(CitizenAnimationType.BACK_WALK);
-      this._activeSprite.position.y -= dt.deltaTime * this._speed;
+      initialPosition.y -= dt.deltaTime * this._speed;
       hasMoved = true;
     }
 
     if (!hasMoved) {
       this.replaceAnimation(CitizenAnimationType.FRONT_IDLE);
     }
+    return initialPosition;
+  }
+
+  public moveTo(point: Point): void {
+    this.position.set(point.x, point.y);
   }
 
   private replaceAnimation(animationType: CitizenAnimationType) {
@@ -82,6 +92,7 @@ export class MovableCitizen extends Container implements MovableCharacter {
     this.removeChild(this._activeSprite);
     newSprite.position.x = this._activeSprite.position.x;
     newSprite.position.y = this._activeSprite.position.y;
+    newSprite.animationSpeed = this._activeSprite.animationSpeed;
 
     this.addChild(newSprite);
     newSprite.play();
