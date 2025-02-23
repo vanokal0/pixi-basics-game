@@ -6,7 +6,7 @@ export class MovableMinotaur extends Container implements MovableCharacter {
   static readonly INITIAL_SPEED: number = 2;
   static readonly INITIAL_ANIMATION_SPEED: number = 0.5;
   static readonly INITIAL_Z_INDEX: number = 1;
-  static readonly DEFAULT_ATTACK_DISTANCE = 30;
+  static readonly DEFAULT_ATTACK_DISTANCE = 50;
 
   private _isInRange: boolean;
   private _isAttacking: boolean;
@@ -78,7 +78,14 @@ export class MovableMinotaur extends Container implements MovableCharacter {
       return;
     }
     this._isAttacking = true;
-    this.replaceAnimation(MinotaurAnimationType.ATTACK_LEFT);
+
+    if (this._activeTarget) {
+      if (this._activeTarget.x - this.x < 0) {
+        this.replaceAnimation(MinotaurAnimationType.ATTACK_LEFT);
+      } else {
+        this.replaceAnimation(MinotaurAnimationType.ATTACK_RIGHT);
+      }
+    }
     this._activeSprite.loop = false;
     this._activeSprite.play();
 
@@ -87,6 +94,7 @@ export class MovableMinotaur extends Container implements MovableCharacter {
       this._isAttacking = false;
       this._activeSprite.currentFrame = 0;
       this.replaceAnimation(MinotaurAnimationType.IDLE);
+      this._activeSprite.animationSpeed *= 0.75;
     };
   }
 
