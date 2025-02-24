@@ -1,11 +1,12 @@
-import { AnimatedSprite, Container, Point, Ticker } from "pixi.js";
+import { AnimatedSprite, Container, Point } from "pixi.js";
 import { MovableCharacter } from "./MovableCharacter";
+import { MovableCitizen } from "./MovableCitizen";
 
 export class MovableMinotaur extends Container implements MovableCharacter {
-  static readonly INITIAL_SCALE: number = 0.3;
-  static readonly INITIAL_SPEED: number = 2;
-  static readonly INITIAL_ANIMATION_SPEED: number = 0.5;
-  static readonly INITIAL_Z_INDEX: number = 1;
+  static readonly DEFAULT_SCALE: number = 0.3;
+  static readonly DEFAULT_SPEED: number = 2;
+  static readonly DEFAULT_ANIMATION_SPEED: number = 0.5;
+  static readonly DEFAULT_Z_INDEX: number = 1;
   static readonly DEFAULT_ATTACK_DISTANCE = 50;
 
   private _isInRange: boolean;
@@ -23,8 +24,8 @@ export class MovableMinotaur extends Container implements MovableCharacter {
     super();
     this.position.set(initialPosition.x, initialPosition.y);
 
-    this._speed = MovableMinotaur.INITIAL_SPEED;
-    this.scale = MovableMinotaur.INITIAL_SCALE;
+    this._speed = MovableMinotaur.DEFAULT_SPEED;
+    this.scale = MovableMinotaur.DEFAULT_SCALE;
     this._animatedSpriteMap = animatedSpriteMap;
 
     const initialAnimatedSprite: AnimatedSprite | undefined =
@@ -33,18 +34,15 @@ export class MovableMinotaur extends Container implements MovableCharacter {
       throw new Error("Initial animation is missing in a sprite map.");
     }
     this._activeSprite = animatedSpriteMap.get(initialAnimation)!;
-    this._activeSprite.animationSpeed = MovableMinotaur.INITIAL_ANIMATION_SPEED;
-    this.zIndex = MovableMinotaur.INITIAL_Z_INDEX;
+    this._activeSprite.animationSpeed = MovableMinotaur.DEFAULT_ANIMATION_SPEED;
+    this.zIndex = MovableMinotaur.DEFAULT_Z_INDEX;
     this._isInRange = false;
     this._isAttacking = false;
+    this._activeSprite.play();
     this.addChild(this._activeSprite);
   }
 
-  public play(): void {
-    this._activeSprite.play();
-  }
-
-  public getNextPosition(dt: Ticker): Point {
+  public getNextPosition(dt: number): Point {
     if (!this._activeTarget) {
       return this.position;
     }
@@ -64,8 +62,8 @@ export class MovableMinotaur extends Container implements MovableCharacter {
     }
 
     return new Point(
-      this.x + (directionX / distance) * this._speed * dt.deltaTime,
-      this.y + (directionY / distance) * this._speed * dt.deltaTime
+      this.x + (directionX / distance) * this._speed * dt,
+      this.y + (directionY / distance) * this._speed * dt
     );
   }
 
@@ -77,10 +75,11 @@ export class MovableMinotaur extends Container implements MovableCharacter {
     if (this._isAttacking) {
       return;
     }
+    const target = this._activeTarget;
     this._isAttacking = true;
 
-    if (this._activeTarget) {
-      if (this._activeTarget.x - this.x < 0) {
+    if (target) {
+      if (target.x - this.x < 0) {
         this.replaceAnimation(MinotaurAnimationType.ATTACK_LEFT);
       } else {
         this.replaceAnimation(MinotaurAnimationType.ATTACK_RIGHT);
@@ -90,10 +89,16 @@ export class MovableMinotaur extends Container implements MovableCharacter {
     this._activeSprite.play();
 
     this._activeSprite.onComplete = () => {
+      if (target && "kill" in target) {
+        const killableTarget = target as MovableCitizen;
+        killableTarget.kill();
+      }
       this._isInRange = false;
       this._isAttacking = false;
+
       this._activeSprite.currentFrame = 0;
       this.replaceAnimation(MinotaurAnimationType.IDLE);
+
       this._activeSprite.animationSpeed *= 0.75;
     };
   }
@@ -116,6 +121,9 @@ export class MovableMinotaur extends Container implements MovableCharacter {
     this._activeSprite = newSprite;
   }
 
+  public get activeTarget(): Container | undefined {
+    return this._activeTarget;
+  }
   public set activeTarget(target: Container | undefined) {
     this._activeTarget = target;
   }
