@@ -9,11 +9,10 @@ export class MovableCitizen extends MovableCharacter<CitizenAnimationType> {
   static readonly DEFAULT_Z_INDEX: number = 2;
 
   private _userInputMap: Map<string, boolean>;
-  private _isAlive;
+  private _canMove;
 
   public constructor(
-    animatedSpriteMap: Map<CitizenAnimationType, AnimatedSprite>,
-    initialAnimation: CitizenAnimationType
+    animatedSpriteMap: Map<CitizenAnimationType, AnimatedSprite>
   ) {
     super();
 
@@ -30,20 +29,20 @@ export class MovableCitizen extends MovableCharacter<CitizenAnimationType> {
     this.attachKeyInputListeners(this._userInputMap);
 
     const initialAnimatedSprite: AnimatedSprite | undefined =
-      animatedSpriteMap.get(initialAnimation);
+      animatedSpriteMap.get(CitizenAnimationType.FRONT_IDLE);
     if (!initialAnimatedSprite) {
       throw new Error("Initial animation is missing in a sprite map.");
     }
-    this._activeSprite = animatedSpriteMap.get(initialAnimation)!;
+    this._activeSprite = initialAnimatedSprite;
     this._activeSprite.animationSpeed = MovableCitizen.DEFAULT_ANIMATION_SPEED;
     this.zIndex = MovableCitizen.DEFAULT_Z_INDEX;
-    this._isAlive = true;
+    this._canMove = true;
     this._activeSprite.play();
     this.addChild(this._activeSprite);
   }
 
   public getNextPosition(dt: number): Point {
-    if (!this._isAlive) {
+    if (!this._canMove) {
       return this._position;
     }
 
@@ -83,9 +82,17 @@ export class MovableCitizen extends MovableCharacter<CitizenAnimationType> {
   }
 
   public kill() {
-    this._isAlive = false;
+    this._canMove = false;
     this.replaceAnimation(CitizenAnimationType.DEAD);
     if (this._activeSprite) this._activeSprite.stop();
+  }
+
+  public notify(event: string): void {
+    switch (event) {
+      case "gameOver":
+        this._canMove = false;
+        this.replaceAnimation(CitizenAnimationType.FRONT_IDLE);
+    }
   }
 
   private attachKeyInputListeners(keymap: Map<string, boolean>) {

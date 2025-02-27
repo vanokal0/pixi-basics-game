@@ -1,7 +1,7 @@
 import { Container, Application, Ticker } from "pixi.js";
-import { MenuContainer } from "../scenes/MenuContainer";
-import { LevelContainer } from "../scenes/LevelContainer";
-import { GameOverContainer } from "../scenes/GameOverContainer";
+import { MenuContainer } from "../scenes/containers/MenuContainer";
+import { LevelContainer } from "../scenes/containers/LevelContainer";
+import { GameOverContainer } from "../scenes/containers/GameOverContainer";
 import { StyleInitializer } from "./initializers/StyleInitializer";
 
 export class SceneManager {
@@ -48,14 +48,9 @@ export class SceneManager {
     this._updateLevel = (ticker: Ticker) => levelCallback(ticker.deltaTime);
     this._app.ticker.add(this._updateLevel);
 
-    level.on("win", () => {
+    level.on("gameOver", (gameOverText) => {
       if (this._updateLevel) this._app.ticker.remove(this._updateLevel);
-      this.showGameOver("You Won!");
-    });
-
-    level.on("lose", () => {
-      if (this._updateLevel) this._app.ticker.remove(this._updateLevel);
-      this.showGameOver("You Lost!");
+      this.showGameOver(gameOverText);
     });
 
     this.changeScene(level, true);

@@ -1,13 +1,13 @@
 import { AnimatedSprite, Container, Point } from "pixi.js";
-import { MovableCitizen } from "./MovableCitizen";
 import { MovableCharacter } from "./MovableCharacter";
+import { MovableCitizen } from "./MovableCitizen";
 
 export class MovableMinotaur extends MovableCharacter<MinotaurAnimationType> {
   static readonly DEFAULT_SCALE: number = 0.3;
   static readonly DEFAULT_SPEED: number = 2;
   static readonly DEFAULT_ANIMATION_SPEED: number = 0.5;
   static readonly DEFAULT_Z_INDEX: number = 1;
-  static readonly DEFAULT_ATTACK_DISTANCE = 50;
+  static readonly DEFAULT_ATTACK_DISTANCE: number = 50;
 
   private _isInRange: boolean;
   private _isAttacking: boolean;
@@ -15,7 +15,6 @@ export class MovableMinotaur extends MovableCharacter<MinotaurAnimationType> {
 
   constructor(
     animatedSpriteMap: Map<MinotaurAnimationType, AnimatedSprite>,
-    initialAnimation: MinotaurAnimationType,
     initialPosition: Point
   ) {
     super();
@@ -26,11 +25,11 @@ export class MovableMinotaur extends MovableCharacter<MinotaurAnimationType> {
     this._animatedSpriteMap = animatedSpriteMap;
 
     const initialAnimatedSprite: AnimatedSprite | undefined =
-      animatedSpriteMap.get(initialAnimation);
+      animatedSpriteMap.get(MinotaurAnimationType.IDLE);
     if (!initialAnimatedSprite) {
       throw new Error("Initial animation is missing in a sprite map.");
     }
-    this._activeSprite = animatedSpriteMap.get(initialAnimation)!;
+    this._activeSprite = initialAnimatedSprite;
     this._activeSprite.animationSpeed = MovableMinotaur.DEFAULT_ANIMATION_SPEED;
     this.zIndex = MovableMinotaur.DEFAULT_Z_INDEX;
     this._isInRange = false;
@@ -92,6 +91,14 @@ export class MovableMinotaur extends MovableCharacter<MinotaurAnimationType> {
       if (this._activeSprite) this._activeSprite.currentFrame = 0;
       this.replaceAnimation(MinotaurAnimationType.IDLE);
     };
+  }
+
+  public notify(event: string): void {
+    switch (event) {
+      case "gameOver":
+        this._activeTarget = undefined;
+        this.replaceAnimation(MinotaurAnimationType.IDLE);
+    }
   }
 
   public get activeTarget(): Container | undefined {

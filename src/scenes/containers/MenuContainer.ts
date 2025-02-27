@@ -2,7 +2,7 @@ import { Container, Text } from "pixi.js";
 import {
   StyleInitializer,
   StyleType,
-} from "../utils/initializers/StyleInitializer";
+} from "../../utils/initializers/StyleInitializer";
 
 export class MenuContainer extends Container {
   private _textValue: string;

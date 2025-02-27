@@ -1,18 +1,17 @@
 import { AnimatedSprite, Container, Point, Size } from "pixi.js";
-import {
-  CitizenAnimationType,
-  MovableCitizen,
-} from "../movable/MovableCitizen";
-import { SpriteInitializer } from "../utils/initializers/SpriteInitializer";
-import { Movable } from "../movable/Movable";
-import { RectangleBarrier } from "../static/RectangleBarrier";
-import {
-  MinotaurAnimationType,
-  MovableMinotaur,
-} from "../movable/MovableMinotaur";
-import { ScoreDisplay } from "../static/ScoreDisplay";
 
-export class LevelContainer extends Container {
+import { SpriteInitializer } from "../../utils/initializers/SpriteInitializer";
+
+import { RectangleBarrier } from "../../static/RectangleBarrier";
+import { ScoreDisplay } from "../../static/ScoreDisplay";
+
+import { Movable } from "../../movable/Movable";
+import { MovableMinotaur } from "../../movable/MovableMinotaur";
+import { MovableCitizen } from "../../movable/MovableCitizen";
+import { LevelEventPublisher } from "../publishers/LevelEventPublisher";
+import { LevelEventChannel } from "../channels/LevelEventChannel";
+
+export class LevelContainer extends Container implements LevelEventPublisher {
   static readonly DEFAULT_COIN_AMOUNT: number = 10;
   static readonly DEFAULT_BARRIER_SIZE: Size = { width: 80, height: 80 };
 
@@ -24,6 +23,7 @@ export class LevelContainer extends Container {
   private _scoreDisplay: ScoreDisplay;
   private _coinContainer: Container;
   private _movableCharacters: Array<Movable>;
+  private _eventChannel: LevelEventChannel;
 
   public constructor() {
     super();
@@ -39,6 +39,7 @@ export class LevelContainer extends Container {
 
     this._movableCharacters = new Array<Movable>();
     this._coinContainer = new Container();
+    this._eventChannel = new LevelEventChannel();
   }
 
   public async initialize(): Promise<(dt: number) => void> {
@@ -62,22 +63,19 @@ export class LevelContainer extends Container {
 
     //citizen initialization
     const citizen: MovableCitizen = new MovableCitizen(
-      await initializer.initCitizenSpriteMap(),
-      CitizenAnimationType.FRONT_IDLE
+      await initializer.initCitizenSpriteMap()
     );
+    this._eventChannel.subscribe("gameOver", citizen);
     this._movableCharacters.push(citizen);
     this.addChild(citizen);
 
     //minotaur initialization
-    const minotaurSpriteMap: Map<MinotaurAnimationType, AnimatedSprite> =
-      await initializer.initMinotaurSpriteMap();
     const minotaur = new MovableMinotaur(
-      minotaurSpriteMap,
-      MinotaurAnimationType.IDLE,
+      await initializer.initMinotaurSpriteMap(),
       new Point(this.width / 2, this.height / 2)
     );
     minotaur.activeTarget = citizen;
-
+    this._eventChannel.subscribe("gameOver", minotaur);
     this._movableCharacters.push(minotaur);
     this.addChild(minotaur);
 
@@ -90,7 +88,8 @@ export class LevelContainer extends Container {
 
     return (dt: number) => {
       if (this._levelScore === this._coinAmount) {
-        this.emit("win");
+        this.publish("gameOver");
+        this.emit("gameOver", "You Won!");
       }
 
       this._movableCharacters.forEach((movable) => {
@@ -109,11 +108,16 @@ export class LevelContainer extends Container {
         if (attackCondition) {
           movable.attack();
           movable.activeTarget = undefined;
-          this.emit("lose");
+          //this.publish("gameOver");
+          this.emit("gameOver", "You Lost!");
         }
       });
       this.checkCoinCollision(citizen, this._coinContainer);
     };
+  }
+
+  public publish(event: string): void {
+    this._eventChannel.publish(event);
   }
 
   private async initializeCoinContainer(

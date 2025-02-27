@@ -6,11 +6,11 @@ import {
   Texture,
   TilingSprite,
 } from "pixi.js";
-import { CitizenAnimationType } from "../../movable/MovableCitizen";
 import { CitizenAsset } from "../assets/CitizenAsset";
-import { CoinAsset } from "../assets/CoinAsset";
+import { CitizenAnimationType } from "../../movable/MovableCitizen";
 import { MinotaurAsset } from "../assets/MinotaurAsset";
 import { MinotaurAnimationType } from "../../movable/MovableMinotaur";
+import { CoinAsset } from "../assets/CoinAsset";
 import { BarrierDirection } from "../../static/RectangleBarrier";
 
 export class SpriteInitializer {

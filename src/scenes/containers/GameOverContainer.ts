@@ -2,7 +2,7 @@ import { Container, Graphics, Text } from "pixi.js";
 import {
   StyleInitializer,
   StyleType,
-} from "../utils/initializers/StyleInitializer";
+} from "../../utils/initializers/StyleInitializer";
 
 export class GameOverContainer extends Container {
   constructor(headingText: string) {

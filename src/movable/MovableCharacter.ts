@@ -1,9 +1,10 @@
 import { AnimatedSprite, Container, Point } from "pixi.js";
 import { Movable } from "./Movable";
+import { LevelEventSubscriber } from "../scenes/subscribers/LevelEventSubscriber";
 
 export abstract class MovableCharacter<MovableAnimationType>
   extends Container
-  implements Movable
+  implements Movable, LevelEventSubscriber
 {
   protected _speed: number;
   protected _animatedSpriteMap: Map<MovableAnimationType, AnimatedSprite>;
@@ -15,6 +16,7 @@ export abstract class MovableCharacter<MovableAnimationType>
     this._animatedSpriteMap = new Map<MovableAnimationType, AnimatedSprite>();
   }
   abstract getNextPosition(dt: number): Point;
+  abstract notify(event: string): void;
 
   public moveTo(point: Point): void {
     this.position.set(point.x, point.y);
