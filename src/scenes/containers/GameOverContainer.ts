@@ -28,8 +28,10 @@ export class GameOverContainer extends Container {
     const style = StyleInitializer.getStyle(StyleType.TEXT_HEADING);
 
     const heading = new Text({ text: headingText, style: style });
-    heading.anchor.set(0.5);
-    heading.position.set(screenWidth / 2, screenHeight / 2 - 100);
+    heading.position.set(
+      screenWidth / 2 - heading.width / 2,
+      screenHeight / 2 - 100
+    );
     this.addChild(heading);
 
     const restartButton = this.createButton(
@@ -61,12 +63,10 @@ export class GameOverContainer extends Container {
     const buttonStyle = StyleInitializer.getStyle(StyleType.TEXT_BUTTON);
 
     const button = new Text({ text, style: buttonStyle });
-    button.anchor.set(0.5);
-    button.position.set(x, y);
+    button.position.set(x - button.width / 2, y);
     button.interactive = true;
     button.cursor = "pointer";
     button.on("pointerdown", callback);
-
     return button;
   }
 
