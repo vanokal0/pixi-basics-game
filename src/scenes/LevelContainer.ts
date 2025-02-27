@@ -4,7 +4,7 @@ import {
   MovableCitizen,
 } from "../movable/MovableCitizen";
 import { SpriteInitializer } from "../utils/initializers/SpriteInitializer";
-import { MovableCharacter } from "../movable/MovableCharacter";
+import { Movable } from "../movable/Movable";
 import { RectangleBarrier } from "../static/RectangleBarrier";
 import {
   MinotaurAnimationType,
@@ -23,7 +23,7 @@ export class LevelContainer extends Container {
 
   private _scoreDisplay: ScoreDisplay;
   private _coinContainer: Container;
-  private _movableCharacters: Array<MovableCharacter>;
+  private _movableCharacters: Array<Movable>;
 
   public constructor() {
     super();
@@ -37,7 +37,7 @@ export class LevelContainer extends Container {
     this._coinAmount = LevelContainer.DEFAULT_COIN_AMOUNT;
     this._levelScore = 0;
 
-    this._movableCharacters = new Array<MovableCharacter>();
+    this._movableCharacters = new Array<Movable>();
     this._coinContainer = new Container();
   }
 
@@ -77,6 +77,7 @@ export class LevelContainer extends Container {
       new Point(this.width / 2, this.height / 2)
     );
     minotaur.activeTarget = citizen;
+
     this._movableCharacters.push(minotaur);
     this.addChild(minotaur);
 

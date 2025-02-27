@@ -1,16 +1,13 @@
-import { AnimatedSprite, Container, Point } from "pixi.js";
+import { AnimatedSprite, Point } from "pixi.js";
 import { MovableCharacter } from "./MovableCharacter";
 
-export class MovableCitizen extends Container implements MovableCharacter {
+export class MovableCitizen extends MovableCharacter<CitizenAnimationType> {
   static readonly DEFAULT_SCALE: number = 0.15;
   static readonly DEFAULT_POSITION: Point = new Point(200, 200);
   static readonly DEFAULT_SPEED: number = 3;
   static readonly DEFAULT_ANIMATION_SPEED: number = 0.5;
   static readonly DEFAULT_Z_INDEX: number = 2;
 
-  private _speed: number;
-  private _activeSprite: AnimatedSprite;
-  private _animatedSpriteMap: Map<CitizenAnimationType, AnimatedSprite>;
   private _userInputMap: Map<string, boolean>;
   private _isAlive;
 
@@ -85,32 +82,10 @@ export class MovableCitizen extends Container implements MovableCharacter {
     return nextPosition;
   }
 
-  public moveTo(point: Point): void {
-    this.position.set(point.x, point.y);
-  }
-
   public kill() {
     this._isAlive = false;
     this.replaceAnimation(CitizenAnimationType.DEAD);
-    this._activeSprite.stop();
-  }
-
-  private replaceAnimation(animationType: CitizenAnimationType) {
-    const newSprite: AnimatedSprite | undefined =
-      this._animatedSpriteMap.get(animationType);
-
-    if (!newSprite) {
-      throw new Error("Animation is missing in a sprite map.");
-    }
-
-    this.removeChild(this._activeSprite);
-    newSprite.position.x = this._activeSprite.position.x;
-    newSprite.position.y = this._activeSprite.position.y;
-    newSprite.animationSpeed = this._activeSprite.animationSpeed;
-
-    this.addChild(newSprite);
-    newSprite.play();
-    this._activeSprite = newSprite;
+    if (this._activeSprite) this._activeSprite.stop();
   }
 
   private attachKeyInputListeners(keymap: Map<string, boolean>) {
