@@ -160,6 +160,14 @@ export class SpriteInitializer {
     deadCitizen.rotation = (90 * Math.PI) / 180.0;
     animationMap.set(CitizenAnimationType.DEAD, deadCitizen);
 
+    animationMap.set(
+      CitizenAnimationType.FRONT_GREETING,
+      this.createModifiedSprite(
+        citizenAsset.animations.citizen_front_greeting,
+        1
+      )
+    );
+
     return animationMap;
   }
 

@@ -93,9 +93,11 @@ export class MovableCitizen
 
   public notify(event: string): void {
     switch (event) {
-      case "gameOver":
+      case "gameOverWin": {
         this._canMove = false;
-        this.replaceAnimation(CitizenAnimationType.FRONT_IDLE);
+        this.replaceAnimation(CitizenAnimationType.FRONT_GREETING);
+        return;
+      }
     }
   }
 
@@ -113,6 +115,7 @@ export class MovableCitizen
 export enum CitizenAnimationType {
   FRONT_IDLE,
   FRONT_WALK,
+  FRONT_GREETING,
 
   BACK_IDLE,
   BACK_WALK,

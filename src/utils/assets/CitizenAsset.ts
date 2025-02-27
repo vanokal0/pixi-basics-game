@@ -8,5 +8,6 @@ export interface CitizenAsset {
     citizen_back_walk: AnimatedSpriteFrames;
     citizen_side_idle: AnimatedSpriteFrames;
     citizen_side_walk: AnimatedSpriteFrames;
+    citizen_front_greeting: AnimatedSpriteFrames;
   };
 }

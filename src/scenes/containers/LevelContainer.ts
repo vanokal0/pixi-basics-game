@@ -11,6 +11,7 @@ import { MovableCitizen } from "../../movable/MovableCitizen";
 import { LevelEventPublisher } from "../publishers/LevelEventPublisher";
 import { LevelEventChannel } from "../channels/LevelEventChannel";
 import { Attacking } from "../../attacking/Attacking";
+import { LevelEventSubscriber } from "../subscribers/LevelEventSubscriber";
 
 export class LevelContainer extends Container implements LevelEventPublisher {
   static readonly DEFAULT_COIN_AMOUNT: number = 10;
@@ -66,7 +67,6 @@ export class LevelContainer extends Container implements LevelEventPublisher {
     const citizen: MovableCitizen = new MovableCitizen(
       await initializer.initCitizenSpriteMap()
     );
-    this._eventChannel.subscribe("gameOver", citizen);
     this._movableCharacters.push(citizen);
     this.addChild(citizen);
 
@@ -76,9 +76,14 @@ export class LevelContainer extends Container implements LevelEventPublisher {
       new Point(this.width / 2, this.height / 2)
     );
     minotaur.activeTarget = citizen;
-    this._eventChannel.subscribe("gameOver", minotaur);
     this._movableCharacters.push(minotaur);
     this.addChild(minotaur);
+
+    //movable-subscribers event subscription via eventChannel
+    this.subscribeAllMovables(this._movableCharacters, [
+      "gameOverWin",
+      "gameOverLose",
+    ]);
 
     //coins initialization
     this._coinContainer = await this.initializeCoinContainer(initializer);
@@ -89,7 +94,7 @@ export class LevelContainer extends Container implements LevelEventPublisher {
 
     return (dt: number) => {
       if (this._levelScore === this._coinAmount) {
-        this.publish("gameOver");
+        this.publish("gameOverWin");
         this.emit("gameOver", "You Won!");
       }
 
@@ -106,8 +111,7 @@ export class LevelContainer extends Container implements LevelEventPublisher {
           const attacking = movable as unknown as Attacking;
           if (attacking.isInRange && !attacking.isAttacking) {
             attacking.attack();
-            attacking.activeTarget = undefined;
-            //this.publish("gameOver");
+            this.publish("gameOverLose");
             this.emit("gameOver", "You Lost!");
           }
         }
@@ -165,5 +169,19 @@ export class LevelContainer extends Container implements LevelEventPublisher {
       y >= this._barrierSize.height &&
       y <= this.height - this._barrierSize.height
     );
+  }
+
+  private subscribeAllMovables(
+    movables: Array<Movable>,
+    events: Array<string>
+  ) {
+    movables.forEach((m: Movable) => {
+      if ("notify" in m) {
+        const subscriber = m as LevelEventSubscriber;
+        events.forEach((eventName) =>
+          this._eventChannel.subscribe(eventName, subscriber)
+        );
+      }
+    });
   }
 }

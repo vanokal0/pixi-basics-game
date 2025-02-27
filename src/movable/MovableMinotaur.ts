@@ -99,9 +99,15 @@ export class MovableMinotaur
 
   public notify(event: string): void {
     switch (event) {
-      case "gameOver":
+      case "gameOverWin": {
         this._activeTarget = undefined;
         this.replaceAnimation(MinotaurAnimationType.IDLE);
+        return;
+      }
+      case "gameOverLose": {
+        this._activeTarget = undefined;
+        return;
+      }
     }
   }
 
