@@ -1,8 +1,12 @@
 import { AnimatedSprite, Container, Point } from "pixi.js";
 import { MovableCharacter } from "./MovableCharacter";
-import { MovableCitizen } from "./MovableCitizen";
+import { Attacking } from "../attacking/Attacking";
+import { Targetable } from "../attacking/Targetable";
 
-export class MovableMinotaur extends MovableCharacter<MinotaurAnimationType> {
+export class MovableMinotaur
+  extends MovableCharacter<MinotaurAnimationType>
+  implements Attacking
+{
   static readonly DEFAULT_SCALE: number = 0.3;
   static readonly DEFAULT_SPEED: number = 2;
   static readonly DEFAULT_ANIMATION_SPEED: number = 0.5;
@@ -11,7 +15,7 @@ export class MovableMinotaur extends MovableCharacter<MinotaurAnimationType> {
 
   private _isInRange: boolean;
   private _isAttacking: boolean;
-  private _activeTarget: Container | undefined;
+  private _activeTarget: (Targetable & Container) | undefined;
 
   constructor(
     animatedSpriteMap: Map<MinotaurAnimationType, AnimatedSprite>,
@@ -82,7 +86,7 @@ export class MovableMinotaur extends MovableCharacter<MinotaurAnimationType> {
     this._activeSprite.play();
     this._activeSprite.onComplete = () => {
       if (target && "kill" in target) {
-        const killableTarget = target as MovableCitizen;
+        const killableTarget = target as Targetable;
         killableTarget.kill();
       }
       this._isInRange = false;
@@ -101,10 +105,10 @@ export class MovableMinotaur extends MovableCharacter<MinotaurAnimationType> {
     }
   }
 
-  public get activeTarget(): Container | undefined {
+  public get activeTarget(): Targetable | undefined {
     return this._activeTarget;
   }
-  public set activeTarget(target: Container | undefined) {
+  public set activeTarget(target: (Targetable & Container) | undefined) {
     this._activeTarget = target;
   }
 

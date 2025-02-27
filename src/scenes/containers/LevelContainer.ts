@@ -10,6 +10,7 @@ import { MovableMinotaur } from "../../movable/MovableMinotaur";
 import { MovableCitizen } from "../../movable/MovableCitizen";
 import { LevelEventPublisher } from "../publishers/LevelEventPublisher";
 import { LevelEventChannel } from "../channels/LevelEventChannel";
+import { Attacking } from "../../attacking/Attacking";
 
 export class LevelContainer extends Container implements LevelEventPublisher {
   static readonly DEFAULT_COIN_AMOUNT: number = 10;
@@ -101,15 +102,14 @@ export class LevelContainer extends Container implements LevelEventPublisher {
         if (moveCondition) movable.moveTo(position);
 
         //attack
-        const attackCondition =
-          movable instanceof MovableMinotaur &&
-          movable.isInRange &&
-          !movable.isAttacking;
-        if (attackCondition) {
-          movable.attack();
-          movable.activeTarget = undefined;
-          //this.publish("gameOver");
-          this.emit("gameOver", "You Lost!");
+        if ("attack" in movable) {
+          const attacking = movable as unknown as Attacking;
+          if (attacking.isInRange && !attacking.isAttacking) {
+            attacking.attack();
+            attacking.activeTarget = undefined;
+            //this.publish("gameOver");
+            this.emit("gameOver", "You Lost!");
+          }
         }
       });
       this.checkCoinCollision(citizen, this._coinContainer);
@@ -144,7 +144,7 @@ export class LevelContainer extends Container implements LevelEventPublisher {
   }
 
   private checkCoinCollision(
-    citizen: MovableCitizen,
+    citizen: Container,
     coinContainer: Container
   ): void {
     for (const coin of coinContainer.children) {

@@ -1,7 +1,11 @@
 import { AnimatedSprite, Point } from "pixi.js";
 import { MovableCharacter } from "./MovableCharacter";
+import { Targetable } from "../attacking/Targetable";
 
-export class MovableCitizen extends MovableCharacter<CitizenAnimationType> {
+export class MovableCitizen
+  extends MovableCharacter<CitizenAnimationType>
+  implements Targetable
+{
   static readonly DEFAULT_SCALE: number = 0.15;
   static readonly DEFAULT_POSITION: Point = new Point(200, 200);
   static readonly DEFAULT_SPEED: number = 3;
